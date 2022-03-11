@@ -1,0 +1,53 @@
+:root {
+  --bg-calc: #fff;
+}
+:root .dark {
+  --bg-calc: #000;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  min-height: 100%;
+  background: tomato;
+}
+main {
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  background: var(--bg-calc);
+}
+.calculadora_svg {
+  height: 50%;
+}
+svg {
+  height: 100%;
+}
+.teclado:hover {
+  cursor: pointer;
+}
+
+.teclado rect {
+  stroke: #000;
+  fill: #a5a7b9;
+  stroke-width: 5px;
+}
+.teclado > g:hover > rect {
+  fill: rgb(123, 123, 136);
+}
+.teclado g {
+  transition: transform 0.2s ease-out;
+}
+.teclado g:active {  
+  transform: translate(-12px, 2px);  
+}
+#clc {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  font-size: 5vmin;
+}
