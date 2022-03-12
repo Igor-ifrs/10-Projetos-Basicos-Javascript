@@ -1,8 +1,20 @@
 :root {
-  --bg-calc: #fff;
+  --bg-color: radial-gradient( #bd93f9 ,#000 );
+  --font-color: #000;
+  --calc-color:#dddddc;
+  --calc-aside-color:#a6a7b9;
+  --visor-color:#a5a7b9;
+  --sombra-teclado:#3e4052;
+  --teclas-cor:#a5a7b9;
 }
-:root .dark {
-  --bg-calc: #000;
+.dark:root {
+  --bg-color: linear-gradient(20deg, rgb(40,42,54) 0%,rgb(0,0,0) 100%);
+  --font-color: #fff;
+  --calc-color:#151516;
+  --calc-aside-color:#27272c;
+  --visor-color:#0f0f0f;
+  --sombra-teclado:#000;
+  --teclas-cor:#6c6d79;
 }
 * {
   margin: 0;
@@ -13,19 +25,37 @@
 html,
 body {
   min-height: 100%;
-  background: tomato;
+  color: var(--font-color);
 }
 main {
   height: 100vh;
+  width: 100%;
   display: grid;
   place-items: center;
-  background: var(--bg-calc);
+  background: var(--bg-color);
 }
 .calculadora_svg {
-  height: 50%;
+  height: 80vh;
 }
 svg {
   height: 100%;
+}
+.calc-body{
+  fill: var(--calc-color);
+}
+.calc-aside{
+  fill: var(--calc-aside-color);
+}
+#icc-shadow{
+  fill: var(--sombra-teclado);
+}
+@media (max-width: 700px) {
+  svg {
+    width: 100%;
+  }
+  .calculadora_svg {
+    height: 100%;
+  }
 }
 .teclado:hover {
   cursor: pointer;
@@ -33,7 +63,7 @@ svg {
 
 .teclado rect {
   stroke: #000;
-  fill: #a5a7b9;
+  fill: var(--teclas-cor);
   stroke-width: 5px;
 }
 .teclado > g:hover > rect {
@@ -42,12 +72,25 @@ svg {
 .teclado g {
   transition: transform 0.2s ease-out;
 }
-.teclado g:active {  
-  transform: translate(-12px, 2px);  
+.teclado g:active {
+  transform: translate(-12px, 2px);
 }
-#clc {
+#icc_visor{
+  fill: var(--visor-color);
+}
+#input-calc {
   position: absolute;
-  top: 20px;
-  left: 50%;
-  font-size: 5vmin;
+  color:greenyellow;
+  background-color: transparent;
+  outline: none;
+  border: none;  
+  resize: none;
+  font-size: 40px;
+}
+#msg {
+  background: tomato;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 100px;  
 }
