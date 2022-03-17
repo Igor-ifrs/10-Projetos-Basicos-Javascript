@@ -5,45 +5,83 @@ const filtraAtributosData = function (data = []) {
   return dataGroups;
 };
 
-const numeros = filtraAtributosData("data-number");
-const operacoes = filtraAtributosData("data-op");
+const numerosTecladoVirtual = filtraAtributosData("data-number");
+const funcoesTecladoVirtual = filtraAtributosData("data-op");
 const abrirLinks = filtraAtributosData("data-link");
-const msgsHover = filtraAtributosData("data-msg");
-const msg = document.getElementById("msg");
-const visorInput = document.getElementById("input-calc");
 
-//let valores = [];
-numeros.map((e) => {
-  e.addEventListener("click", function (n) {
-    //valores.push(this.dataset.number);
-    visorInput.value += eval(this.dataset.number);
-    console.log(typeof visorInput.value);
-  });
-});
+const [nb, op] = document.querySelectorAll("span"); //continuar daqui estudar expressão regular e diminuir validação
 
-const dicionarioFuncoes = {
-  clear: () => (visorInput.value = ""),
+const visorCalculadora = document.getElementById("input-calc");
+const telaOperacao = document.getElementById("input-oper");
+
+const TECLASNUMERICAS = [".", "00", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const TECLASOPERACOES = ["+", "-", "*", "/"];
+const TECLASFUNCOES = ["=", "Enter", "Backspace", "Delete"];
+
+function atualizaValor(key) {
+  return (visorCalculadora.innerText += key);
+}
+function atuaOP(key) {
+  return (telaOperacao.innerText += key);
+}
+
+const funcoesEsp = {
+  "=": (x) => {
+    console.log("resultado");
+  },
+  Enter: (x) => {
+    console.log("resultado");
+  },
+  Backspace: () => {
+    console.log("back");
+  },
+  Delete: function () {
+    return (visorCalculadora.value = "");
+  },
 };
+function usuarioDigitou(e) {
+  const _key = e.key || e; // verificar celular
+  const _dadoValidos = TECLASNUMERICAS.concat(TECLASOPERACOES, TECLASFUNCOES).includes(_key);
+  if (_dadoValidos) {
+    const _jaTemPonto = _key === "." && visorCalculadora.innerText.includes(".");
+    const _funcoes = TECLASFUNCOES.includes(_key) && visorCalculadora.value.length > 0;
+    const _numeros = TECLASNUMERICAS.includes(_key);
+    const _operacoes = TECLASOPERACOES.includes(_key);
 
-operacoes.map((e) => {
+    if (_funcoes) {
+      return funcoesEsp[_key](_key);
+    }
+    if (_jaTemPonto) return;
+    if (_numeros) {
+      atualizaValor(_key);
+    }
+    if (_operacoes) {
+      atuaOP(_key);
+    }
+  } else {
+    return 0;
+  }
+}
+
+window.addEventListener("keydown", usuarioDigitou);
+
+numerosTecladoVirtual.map((e) => {
   e.addEventListener("click", function (n) {
-    return dicionarioFuncoes[this.dataset.op]();
+    return usuarioDigitou(this.dataset.number);
   });
 });
 
-msgsHover.map(function (btn) {
-  btn.addEventListener("mouseenter", function (e) {
-    msg.innerText = e.target.dataset.msg;
-  });
-  btn.addEventListener("mouseleave", function () {
-    msg.innerText = "Menssagem padrão";
+funcoesTecladoVirtual.map((e) => {
+  e.addEventListener("click", function (n) {
+    return usuarioDigitou(this.dataset.op);
   });
 });
 
 abrirLinks.map(function (g) {
   g.addEventListener("click", function (e) {
     const link = this.dataset.link;
-    window.open(link, "_blank");
+    return window.open(link, "_blank");
   });
 });
-export { visorInput };
+
+//tirar o seleção

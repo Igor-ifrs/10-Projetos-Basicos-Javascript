@@ -1,15 +1,14 @@
-import { visorInput } from "./main.js";
-
+const visor = document.getElementById("visor");
 const visorPosition = () => document.getElementById("icc_visor").getBoundingClientRect();
 {
   const { top, height, left, width } = visorPosition();
-  visorInput.style = `top:${parseInt(top)}px; height:${parseInt(height)}px; left:${parseInt(left)}px; width:${parseInt(
+  visor.style = `top:${parseInt(top)}px; height:${parseInt(height)}px; left:${parseInt(left)}px; width:${parseInt(
     width
   )}px;`;
 }
 window.addEventListener("resize", function () {
   const { top, height, left, width } = visorPosition();
-  visorInput.style = `top:${parseInt(top)}px; height:${parseInt(height)}px; left:${parseInt(left)}px; width:${parseInt(
+  visor.style = `top:${parseInt(top)}px; height:${parseInt(height)}px; left:${parseInt(left)}px; width:${parseInt(
     width
   )}px;`;
 });

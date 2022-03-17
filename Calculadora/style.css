@@ -1,20 +1,20 @@
 :root {
-  --bg-color: radial-gradient( #bd93f9 ,#000 );
+  --bg-color: radial-gradient(#bd93f9, #000);
   --font-color: #000;
-  --calc-color:#dddddc;
-  --calc-aside-color:#a6a7b9;
-  --visor-color:#a5a7b9;
-  --sombra-teclado:#3e4052;
-  --teclas-cor:#a5a7b9;
+  --calc-color: #dddddc;
+  --calc-aside-color: #a6a7b9;
+  --visor-color: #a5a7b9;
+  --sombra-teclado: #3e4052;
+  --teclas-cor: #a5a7b9;
 }
 .dark:root {
-  --bg-color: linear-gradient(20deg, rgb(40,42,54) 0%,rgb(0,0,0) 100%);
-  --font-color: #fff;
-  --calc-color:#151516;
-  --calc-aside-color:#27272c;
-  --visor-color:#0f0f0f;
-  --sombra-teclado:#000;
-  --teclas-cor:#6c6d79;
+  --bg-color: radial-gradient(rgb(40, 42, 54), rgb(0, 0, 0));
+  --font-color: greenyellow;
+  --calc-color: #151516;
+  --calc-aside-color: #27272c;
+  --visor-color: #0f0f0f;
+  --sombra-teclado: #000;
+  --teclas-cor: #6c6d79;
 }
 * {
   margin: 0;
@@ -40,13 +40,13 @@ main {
 svg {
   height: 100%;
 }
-.calc-body{
+.calc-body {
   fill: var(--calc-color);
 }
-.calc-aside{
+.calc-aside {
   fill: var(--calc-aside-color);
 }
-#icc-shadow{
+#icc-shadow {
   fill: var(--sombra-teclado);
 }
 @media (max-width: 700px) {
@@ -55,6 +55,7 @@ svg {
   }
   .calculadora_svg {
     height: 100%;
+    width: 95%;
   }
 }
 .teclado:hover {
@@ -75,22 +76,33 @@ svg {
 .teclado g:active {
   transform: translate(-12px, 2px);
 }
-#icc_visor{
+#icc_visor {
   fill: var(--visor-color);
 }
-#input-calc {
+#visor {
   position: absolute;
-  color:greenyellow;
-  background-color: transparent;
-  outline: none;
-  border: none;  
-  resize: none;
-  font-size: 40px;
 }
-#msg {
-  background: tomato;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-  width: 100px;  
+#visor::after {
+  content: "";
+  position: inherit;
+  width: inherit;
+  height: inherit;
+  top: 0;
+  right: 0;
+  background-color: transparent;
+  cursor: none;
+}
+#input-calc {
+  font-family: 'Courier New', monospace; 
+  color: var(--font-color);
+  height: 100%;
+  width: 99%;
+  background: transparent !important;
+  outline: none;
+  border: none;
+  font-size: 40px;  
+  text-align: right; 
+}
+span::selection{
+  background: none;  
 }
