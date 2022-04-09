@@ -1,91 +1,64 @@
 import "/styles/style.css";
+import ESTADO from "./estadoCalculadora";
 import calcular from "./calcular";
-import atualizaDisplay from "./atualizaDisplay";
-import { teclasNumericas, teclasFuncionais, teclasOperacionais } from "./config";
-
-const currentValue = {
-    number: "",
-    operador: "",
-    auxiliar: "",
-    resultado: "",
-    historico: "",
-};
-
-function limpaDisplay() {
-    currentValue.number = "";
-    currentValue.operador = "";
-    currentValue.auxiliar = "";
-    currentValue.resultado = "";
-    return atualizaDisplay(currentValue);
-}
-
-function backspace() {
-    if (currentValue.resultado) return;
-    if (currentValue.auxiliar !== "") {
-        currentValue.auxiliar = currentValue.auxiliar.replace(/.$/, "");
-        return atualizaDisplay(currentValue);
-    }
-    if (currentValue.operador !== "") {
-        currentValue.operador = "";
-        return atualizaDisplay(currentValue);
-    } else {
-        currentValue.number = currentValue.number.replace(/.$/, "");
-        return atualizaDisplay(currentValue);
-    }
-}
+import { inputHistorico } from "./atualizaDisplay";
 
 function insereNumero(numero) {
-    if (currentValue.operador !== "") {
-        if (numero === "." && currentValue.auxiliar.includes(".")) return;
-        currentValue.auxiliar += numero;
-        return atualizaDisplay(currentValue);
-    }
-    if (numero === "." && currentValue.number.includes(".")) return;
-    currentValue.number += numero;
-    return atualizaDisplay(currentValue);
+    const _ponto = numero === "." && ESTADO.value.inputText.includes(".");
+    if (_ponto) return;
+    const input = ESTADO.value.inputText.concat(numero).replace(/^\./, "0.");
+    return ESTADO.setValue("inputText", input);
 }
-
 function insereOperador(operador) {
-    if (currentValue.number === "" && operador === "-") {
-        currentValue.number = operador;
-        return atualizaDisplay(currentValue);
+    const _result = ESTADO.value.isNumber && ESTADO.value.operador !== "" && ESTADO.value.numero !== "";
+    if (_result) return result();
+
+    const _negativo = operador === "-" && ESTADO.value.inputText === "";
+    if (_negativo) {
+        return ESTADO.setValue("inputText", operador);
     }
-    if (operador === "-" && currentValue.operador.length > 0 && currentValue.auxiliar === "") {
-        currentValue.auxiliar = operador;
-        return atualizaDisplay();
+    if (ESTADO.value.isNumber) {
+        ESTADO.setValue("operador", operador);
+        ESTADO.setValue("numero", ESTADO.value.inputText);
+        ESTADO.setValue("inputText", "");
+        return;
     }
-    if (currentValue.auxiliar !== "") {
-        currentValue.resultado = calcular(currentValue);
-        return atualizaDisplay(currentValue);
-    } else if (currentValue.number !== "" && currentValue.number !== "-") {
-        currentValue.operador = operador;
-        return atualizaDisplay(currentValue);
+    const _changeOperator = !ESTADO.value.isNumber && ESTADO.value.operador !== "" && ESTADO.value.inputText === "";
+    if (_changeOperator) {
+        return ESTADO.setValue("operador", operador);
     }
 }
-
+function result() {
+    if (ESTADO.value.operador === "") return;
+    if (ESTADO.value.isNumber) {
+        ESTADO.setValue("auxiliar", ESTADO.value.inputText);
+        const resultado = calcular(ESTADO.value);
+        ESTADO.setValue("inputText", resultado);
+        ESTADO.setValue("resultado", true);
+        return inputHistorico(ESTADO.value);
+    }
+}
 function calcFuncoes(func) {
     return {
-        Backspace: () => backspace(),
-        "=": () => {
-            if (currentValue.auxiliar === "." || currentValue.auxiliar === "-.") return;
-            currentValue.resultado = calcular(currentValue);
-            return atualizaDisplay(currentValue);
+        Enter: () => result(),
+        Backspace: () => {
+            const corrigir = ESTADO.value.inputText.replace(/.$/, "");
+            return ESTADO.setValue("inputText", corrigir);
         },
-        Enter: () => {
-            if (currentValue.auxiliar === "." || currentValue.auxiliar === "-.") return;
-            currentValue.resultado = calcular(currentValue);
-            return atualizaDisplay(currentValue);
-        },
-        Delete: () => limpaDisplay(),
+        Delete: () => ESTADO.clearAll(),
+        "=": () => result(),
     }[func]();
 }
+const teclasNumericas = [".", "00", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
+const teclasFuncionais = ["Enter", "=", "Backspace", "Delete"];
+const teclasOperacionais = ["+", "-", "*", "**", "/", "x"];
 
 function teclasPressionadas(event) {
     const tecla = event.key || event;
     if (!tecla) return;
-    if (currentValue.resultado !== "") {
-        limpaDisplay();
-        atualizaDisplay(currentValue);
+
+    if (ESTADO.value.resultado) {
+        ESTADO.clearAll();
     }
     if (teclasNumericas.includes(tecla)) {
         return insereNumero(tecla);
@@ -99,3 +72,8 @@ function teclasPressionadas(event) {
 }
 
 window.addEventListener("keydown", teclasPressionadas);
+
+/*
+D-P 🤯
+Quando for refatorar tente diminuir a quantidade de " ifs "
+*/

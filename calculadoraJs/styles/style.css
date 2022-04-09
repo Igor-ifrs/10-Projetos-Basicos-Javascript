@@ -1,14 +1,43 @@
-.display span{
-    font-size: 40px;
-    user-select: none;
+@font-face {
+    font-family: fontCalculator;
+    src: url(./Calculator.ttf);
 }
-.display{
-    text-align: center;    
+
+html {
+    background-color: black;
 }
-span{
-    display: block;      
-    margin: auto; 
+
+.display {
+    font-size: 60px;
+    /* user-select: none; */
+    text-align: center;
+    font-family: fontCalculator;
+    color: yellowgreen;
 }
-html{
-    background-color:rgb(54, 64, 65)
+.display span {
+    display: block;
+    margin: auto;
+    font-size: 30px;
+}
+.display > span:nth-child(3) {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    cursor: pointer;
+    background: tomato;
+}
+.msgs {
+    transition: transform 300ms linear;
+    transform: translateX(-500px);
+}
+.visible {
+    transform: translateX(0);
+}
+.input-number {
+    text-transform: uppercase;
+}
+
+.historico {
+    color: #fff;
+    list-style-type: none;
 }
