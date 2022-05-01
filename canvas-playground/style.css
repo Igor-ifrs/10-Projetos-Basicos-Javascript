@@ -1,0 +1,20 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+html {
+    min-height: 100vh;
+    background-color: rgb(36, 44, 58);
+}
+
+#app {
+    height: 100vh;
+    width: 100%;
+    display: grid;
+    place-items: center;
+}
+
+canvas{
+  border: 3px solid #fff;
+}

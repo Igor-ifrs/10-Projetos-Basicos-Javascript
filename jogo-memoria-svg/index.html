@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+    <head>
+        <meta charset="UTF-8" />
+        <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>MEMO-GAME</title>
+    </head>
+
+    <body>
+        <main class="container-game">
+            <div data-router="false" class="container-score">
+                <h1>SCORE</h1>
+                <div class="btns reset">NEW_GAME</div>
+            </div>
+
+            <div data-router="false" class="container-board">
+                <div class="container-cards"></div>
+                <div class="footer-board">
+                    <div class="btns reset">RESET_GAME</div>
+                </div>
+            </div>
+
+            <div data-router="true" class="container-intro">
+                <h1>SELECT LEVEL</h1>
+                <ul class="select-level">
+                    <li class="btns" data-level="4">EASY</li>
+                    <li class="btns" data-level="6">NORMAL</li>
+                    <li class="btns" data-level="12">HARD</li>
+                </ul>
+            </div>
+        </main>
+    </body>
+
+    <script type="module" src="/src/index.js"></script>
+</html>
